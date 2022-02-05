@@ -6,7 +6,13 @@ import Foundation
 
 let config = URLSessionConfiguration.default
 
-func http(){
+struct Test: Encodable, Decodable{
+    let status: Int
+}
+
+
+func http() -> Bool{
+    var bool: Bool
     let session = URLSession(configuration: config)
     var urlComponents = URLComponents(string: "http://localhost:8000/api/v1/app")
     urlComponents?.query = "type=users"
@@ -24,14 +30,15 @@ func http(){
 
         if response.statusCode == 200 {
             do{
-                let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
-                print(json)
+                let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+                var status = String(describing: json["status"]!)
+                let regex = try! NSRegularExpression(pattern: "20[0-9]?", options: [])
+                regex.matches(in: status, range: NSRange(0..<status.count)).count > 0
             }catch{
                 print("not data")
             }
         }
     }
     task.resume()
-
+    return false
 }
-

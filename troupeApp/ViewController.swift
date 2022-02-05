@@ -12,10 +12,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        http()
+        if !http(){
+            performSegue(withIdentifier: "login", sender: nil)
+        }
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func button(_ sender: Any) {
+    }
+    
 }
 
